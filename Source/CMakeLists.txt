@@ -618,6 +618,8 @@ set(SRCS
   cmPathLabel.h
   cmProjectCommand.cxx
   cmProjectCommand.h
+        cmPyExprCommand.cxx
+        cmPyExprCommand.h
   cmQTWrapCPPCommand.cxx
   cmQTWrapCPPCommand.h
   cmQTWrapUICommand.cxx

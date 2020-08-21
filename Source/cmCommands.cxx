@@ -85,6 +85,7 @@
 #include "cmTryRunCommand.h"
 #include "cmUnsetCommand.h"
 #include "cmWhileCommand.h"
+#include "cmPyExprCommand.h"
 
 #if !defined(CMAKE_BOOTSTRAP)
 #  include "cmAddCompileOptionsCommand.h"
@@ -160,6 +161,7 @@ void GetScriptingCommands(cmState* state)
   state->AddBuiltinCommand("string", cmStringCommand);
   state->AddBuiltinCommand("unset", cmUnsetCommand);
   state->AddBuiltinCommand("while", cmWhileCommand);
+  state->AddBuiltinCommand("py_expr", cmPyExprCommand);
 
   state->AddUnexpectedCommand(
     "else",
