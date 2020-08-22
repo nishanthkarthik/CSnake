@@ -1,3 +1,3 @@
 message(STATUS "Hello world")
 
-py_expr(HELLO WORLD)
+py_expr("1 + 2")

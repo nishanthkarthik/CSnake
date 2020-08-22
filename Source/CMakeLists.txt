@@ -618,8 +618,8 @@ set(SRCS
   cmPathLabel.h
   cmProjectCommand.cxx
   cmProjectCommand.h
-        cmPyExprCommand.cxx
-        cmPyExprCommand.h
+  cmPyExprCommand.cxx
+  cmPyExprCommand.h
   cmQTWrapCPPCommand.cxx
   cmQTWrapCPPCommand.h
   cmQTWrapUICommand.cxx
@@ -883,6 +883,7 @@ target_link_libraries(CMakeLib cmsys
   ${CMAKE_LIBRHASH_LIBRARIES}
   ${CMake_KWIML_LIBRARIES}
   ${CMAKE_THREAD_LIBS_INIT}
+  CSnake
   )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_SYSTEM_PROCESSOR MATCHES "sparc")

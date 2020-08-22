@@ -55,6 +55,10 @@ else()
   set(USE_LGPL "")
 endif()
 
+if (CMake_CSNAKE)
+  add_subdirectory(CSnake)
+endif ()
+
 if("${CMake_SOURCE_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
   # Disallow architecture-specific try_run.  It may not run on the host.
   macro(TRY_RUN)
