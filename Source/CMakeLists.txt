@@ -620,6 +620,8 @@ set(SRCS
   cmProjectCommand.h
   cmPyExprCommand.cxx
   cmPyExprCommand.h
+  cmPyFFICommand.cxx
+  cmPyFFICommand.h
   cmQTWrapCPPCommand.cxx
   cmQTWrapCPPCommand.h
   cmQTWrapUICommand.cxx

@@ -1,5 +1,6 @@
-#include "PyExpr.h"
+#include "Py.h"
 
+#include <fstream>
 #include <stdexcept>
 #include <utility>
 
@@ -16,7 +17,7 @@ PyScope::~PyScope()
   Py_Finalize();
 }
 
-std::string PyExpr::operator()(const std::string& expr)
+std::string Py::operator()(const std::string& expr)
 {
   auto* local = PyDict_New();
   auto* global = PyDict_New();
@@ -25,9 +26,9 @@ std::string PyExpr::operator()(const std::string& expr)
   return { PyUnicode_AsUTF8(repr) };
 }
 
-std::string PyExpr::operator()(const std::vector<std::string>& modules,
-                               const std::map<std::string, std::string>& scope,
-                               const std::string& expr)
+std::string Py::operator()(const std::vector<std::string>& modules,
+                           const std::map<std::string, std::string>& scope,
+                           const std::string& expr)
 {
   auto* local = PyDict_New();
   for (const auto& it : scope) {
@@ -44,10 +45,41 @@ std::string PyExpr::operator()(const std::vector<std::string>& modules,
   auto* result = PyRun_String(expr.c_str(), Py_eval_input, global, local);
   return { PyUnicode_AsUTF8(PyObject_Repr(result)) };
 }
+
+std::string Py::operator()(const std::vector<std::string>& inputs,
+                           const std::string& modulePath,
+                           const std::string& fn)
+{
+  auto* global = PyDict_New();
+  auto* module = PyModule_New("csnake");
+  PyModule_AddStringConstant(module, "__file__", modulePath.c_str());
+
+  {
+    auto* moduleScope = PyModule_GetDict(module);
+    std::ifstream file{ modulePath, std::ios::in };
+    std::string fileContents(std::istreambuf_iterator<char>{ file }, {});
+    auto* result = PyRun_String(fileContents.c_str(), Py_file_input,
+                                moduleScope, moduleScope);
+    assert(result != nullptr);
+  }
+
+  auto* func = PyObject_GetAttrString(module, fn.c_str());
+  assert(func && PyCallable_Check(func));
+
+  auto* argsTuple = PyTuple_New(inputs.size());
+  for (size_t i = 0; i < inputs.size(); ++i) {
+    PyTuple_SetItem(argsTuple, i, PyUnicode_FromString(inputs[i].c_str()));
+  }
+
+  auto* result = PyObject_CallObject(func, argsTuple);
+  assert(result);
+
+  return { PyUnicode_AsUTF8(PyObject_Repr(result)) };
+}
 }
 
 namespace CSnake {
-std::map<std::string, std::vector<std::string>> PyExprParser::parse(
+std::map<std::string, std::vector<std::string>> CMakeArgParser::parse(
   const std::vector<std::string>& input, const std::set<std::string>& one,
   const std::set<std::string>& many)
 {

@@ -61,6 +61,8 @@
 #include "cmParseArgumentsCommand.h"
 #include "cmPolicies.h"
 #include "cmProjectCommand.h"
+#include "cmPyExprCommand.h"
+#include "cmPyFFICommand.h"
 #include "cmReturnCommand.h"
 #include "cmSeparateArgumentsCommand.h"
 #include "cmSetCommand.h"
@@ -85,7 +87,6 @@
 #include "cmTryRunCommand.h"
 #include "cmUnsetCommand.h"
 #include "cmWhileCommand.h"
-#include "cmPyExprCommand.h"
 
 #if !defined(CMAKE_BOOTSTRAP)
 #  include "cmAddCompileOptionsCommand.h"
@@ -162,6 +163,7 @@ void GetScriptingCommands(cmState* state)
   state->AddBuiltinCommand("unset", cmUnsetCommand);
   state->AddBuiltinCommand("while", cmWhileCommand);
   state->AddBuiltinCommand("py_expr", cmPyExprCommand);
+  state->AddBuiltinCommand("py_ffi", cmPyFFICommand);
 
   state->AddUnexpectedCommand(
     "else",

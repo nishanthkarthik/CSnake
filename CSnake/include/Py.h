@@ -15,7 +15,7 @@ public:
   PyScope& operator=(PyScope&&) = delete;
 };
 
-class PyExpr
+class Py
 {
 public:
   std::string operator()(const std::string& expr);
@@ -24,11 +24,14 @@ public:
                          const std::map<std::string, std::string>& scope,
                          const std::string& expr);
 
+  std::string operator()(const std::vector<std::string>& inputs,
+                         const std::string& modulePath, const std::string& fn);
+
 private:
   PyScope m_scope;
 };
 
-class PyExprParser
+class CMakeArgParser
 {
 public:
   static std::map<std::string, std::vector<std::string>> parse(
