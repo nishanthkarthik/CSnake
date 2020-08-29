@@ -1,6 +1,9 @@
 #pragma once
 
+#include <map>
+#include <set>
 #include <string>
+#include <vector>
 
 namespace CSnake {
 class PyScope
@@ -15,11 +18,21 @@ public:
 class PyExpr
 {
 public:
-  PyExpr(std::string expr);
-  std::string operator()();
+  std::string operator()(const std::string& expr);
+
+  std::string operator()(const std::vector<std::string>& modules,
+                         const std::map<std::string, std::string>& scope,
+                         const std::string& expr);
 
 private:
   PyScope m_scope;
-  std::string m_str;
+};
+
+class PyExprParser
+{
+public:
+  static std::map<std::string, std::vector<std::string>> parse(
+    const std::vector<std::string>& input, const std::set<std::string>& one,
+    const std::set<std::string>& many);
 };
 }
